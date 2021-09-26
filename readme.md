@@ -9,5 +9,5 @@ webhooks [here](https://serveur-minecraft-vote.fr/members/developers/webhooks)
 You need to install [Composer](https://getcomposer.org/) and run the following command:
 
 ```bash
-composer require "groupez/serveur-minecraft-vote-php"
+composer require groupez/serveur-minecraft-vote-php
 ```
