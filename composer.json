@@ -1,0 +1,36 @@
+{
+  "name": "groupez/serveur-minecraft-vote-php",
+  "description": "Allows to manage the API of the site serveur-minecraft-vote.fr",
+  "type": "library",
+  "keywords": [
+    "serveur minecraft vote",
+    "smv"
+  ],
+  "homepage": "https://github.com/Maxlego08/Serveur-Minecraft-Vote-Php",
+  "require": {
+    "php": ">=7.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.7"
+  },
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Maxence SIMON",
+      "email": "contact@groupez.dev",
+      "homepage": "https://groupez.dev",
+      "role": "Developer"
+    }
+  ],
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "ServeurMinecraftVote\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ServeurMinecraftVote\\": "tests/"
+    }
+  }
+}
