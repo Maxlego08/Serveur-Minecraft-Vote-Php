@@ -8,7 +8,7 @@ use ServeurMinecraftVote\Exceptions\SignatureVerificationException;
 class VerifyWebhookTest extends TestCase
 {
 
-    const WEBHOOK_SECRET = "smv_secret_key";
+    const WEBHOOK_SECRET = "wh_example";
 
     const WEBHOOK_DATA = '{
         "type": "event.test",
