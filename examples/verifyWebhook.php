@@ -6,7 +6,7 @@ use ServeurMinecraftVote\ServeurMinecraftVote;
 $secret = "wh_......";
 
 $data = @file_get_contents('php://input');
-$header = $_SERVER['HTTP_SMV_Signature'];
+$header = $_SERVER['HTTP_X-SMV-Signature'];
 
 $smv = new ServeurMinecraftVote();
 
@@ -17,5 +17,5 @@ try {
     exit();
 }
 
-$eventData = $data['data'];
+$eventData = json_decode($data['data']);
 http_response_code(200);
