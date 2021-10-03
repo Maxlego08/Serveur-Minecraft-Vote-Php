@@ -7,7 +7,7 @@ use ServeurMinecraftVote\Exceptions\SignatureVerificationException;
 class ServeurMinecraftVote
 {
 
-    const DEFAULT_MILLISECOND_TOLERANCE = 1000;
+    const DEFAULT_SECONDS_TOLERANCE = 60;
 
     /**
      * Secret key to interact with the creation and editing of webhooks
@@ -41,11 +41,11 @@ class ServeurMinecraftVote
      * @param string $data the content sent by server minecraft vote
      * @param string $header the content of the header
      * @param string $secretKey the secret key of the webhook
-     * @param int $millisecondTolerance the tolerance in milliseconds between now and the creation of the request
+     * @param int $secondTolerance the tolerance in milliseconds between now and the creation of the request
      * @return bool
      * @throws SignatureVerificationException if the verification fails
      */
-    public function verifyHeader(string $data, string $header, string $secretKey, int $millisecondTolerance = self::DEFAULT_MILLISECOND_TOLERANCE): bool
+    public function verifyHeader(string $data, string $header, string $secretKey, int $secondTolerance = self::DEFAULT_SECONDS_TOLERANCE): bool
     {
         $timestamp = $this->getTimestamp($header);
         $signature = $this->getSignatures($header);
@@ -76,7 +76,7 @@ class ServeurMinecraftVote
             );
         }
 
-        if ($millisecondTolerance > 0 && abs(time() - $timestamp) > $millisecondTolerance) {
+        if ($secondTolerance > 0 && abs(time() - $timestamp) > $secondTolerance) {
             throw new SignatureVerificationException(
                 "Time limit of the request exceeded",
                 $data,
