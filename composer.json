@@ -8,8 +8,9 @@
   ],
   "homepage": "https://github.com/Maxlego08/Serveur-Minecraft-Vote-Php",
   "require": {
-    "php": ">=7.0",
-    "ext-json": "*"
+    "php": ">=7.4",
+    "ext-json": "*",
+    "guzzlehttp/guzzle": "7.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.7"

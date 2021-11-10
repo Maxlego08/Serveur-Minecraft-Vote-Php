@@ -2,12 +2,15 @@
 
 namespace ServeurMinecraftVote;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use ServeurMinecraftVote\Exceptions\SignatureVerificationException;
 
 class ServeurMinecraftVote
 {
 
     const DEFAULT_SECONDS_TOLERANCE = 1000 * 5;
+    const API_BASE_URL = "https://serveur-minecraft-vote.fr/api/v1";
 
     /**
      * Secret key to interact with the creation and editing of webhooks
@@ -112,6 +115,36 @@ class ServeurMinecraftVote
         $informations = explode('.', $header);
         if (count($informations) === 2)
             return $informations[1];
+        return null;
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public function createWebhook(string $url, array $events, string $description = null): ?Webhook
+    {
+        $signature = "";
+        $userData = "";
+
+        $client = new Client();
+        $response = $client->post(self::API_BASE_URL . '/webhook/create', [
+            'headers' => [
+                'Accept' => 'application/json',
+                'X-SMV-Signature' => $signature,
+            ],
+            'form_params' => [
+                'userData' => $userData,
+                'url' => $url,
+                'events' => $events,
+                'description' => $description,
+            ],
+        ]);
+        $json = json_decode((string)$response->getBody(), true);
+        $message = $json['status'];
+        if ($message !== 'error'){
+
+        }
+
         return null;
     }
 
