@@ -7,7 +7,7 @@ use ServeurMinecraftVote\Exceptions\SignatureVerificationException;
 class ServeurMinecraftVote
 {
 
-    const DEFAULT_SECONDS_TOLERANCE = 60;
+    const DEFAULT_SECONDS_TOLERANCE = 1000 * 5;
 
     /**
      * Secret key to interact with the creation and editing of webhooks

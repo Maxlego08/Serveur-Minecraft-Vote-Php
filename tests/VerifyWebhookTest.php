@@ -67,7 +67,7 @@ class VerifyWebhookTest extends TestCase
         $this->expectException(SignatureVerificationException::class);
 
         $header = $this->generateHeader([
-            'timestamp' => time() - 1500,
+            'timestamp' => time() - (ServeurMinecraftVote::DEFAULT_SECONDS_TOLERANCE * 2),
         ]);
         $smv = new ServeurMinecraftVote();
         $smv->verifyHeader(self::WEBHOOK_DATA, $header, self::WEBHOOK_SECRET);
