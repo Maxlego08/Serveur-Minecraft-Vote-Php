@@ -5,6 +5,7 @@ namespace ServeurMinecraftVote;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use ServeurMinecraftVote\Exceptions\SignatureVerificationException;
+use ServeurMinecraftVote\Exceptions\WebhookCreateException;
 
 class ServeurMinecraftVote
 {
@@ -120,11 +121,18 @@ class ServeurMinecraftVote
 
     /**
      * @throws GuzzleException
+     * @throws WebhookCreateException
      */
-    public function createWebhook(string $url, array $events, string $description = null): ?Webhook
+    public function createWebhook(string $url, array $events, string $description = null): Webhook
     {
-        $signature = "";
-        $userData = "";
+
+        $strExplode = explode('.', $this->secretKey);
+
+        $base64UserId = $strExplode[1];
+        $timestamp = time();
+
+        $signedPayload = "{$timestamp}.{$base64UserId}";
+        $signature = hash_hmac('sha256', $signedPayload, $this->secretKey);
 
         $client = new Client();
         $response = $client->post(self::API_BASE_URL . '/webhook/create', [
@@ -133,19 +141,20 @@ class ServeurMinecraftVote
                 'X-SMV-Signature' => $signature,
             ],
             'form_params' => [
-                'userData' => $userData,
+                'userData' => $base64UserId,
                 'url' => $url,
                 'events' => $events,
                 'description' => $description,
             ],
         ]);
         $json = json_decode((string)$response->getBody(), true);
-        $message = $json['status'];
-        if ($message !== 'error'){
-
+        if ($json['status'] !== 'error') {
+            $events = Event::fromJson($json['events']);
+            $webhook = $json['webhook'];
+            return new Webhook($webhook['id'], $webhook['url'], $webhook['description'], $events, $webhook['secret_key']);
         }
 
-        return null;
+        throw new WebhookCreateException($json['message']);
     }
 
 }

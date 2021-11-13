@@ -2,6 +2,13 @@
 
 namespace ServeurMinecraftVote;
 
+/**
+ * @property string $id
+ * @property string $endpoint
+ * @property string $description
+ * @property Event[] $events
+ * @property string $secretKey
+ */
 class Webhook
 {
 
@@ -10,41 +17,41 @@ class Webhook
      *
      * @var string
      */
-    private $id;
+    public $id;
 
     /**
      * URL that the webhook will call during an event
      *
      * @var string
      */
-    private $endpoint;
+    public $endpoint;
 
     /**
      * Description of the webhook
      *
      * @var string
      */
-    private $description;
+    public $description;
 
     /**
      * List of events that the webhook will listen to
      *
-     * @var array
+     * @var Event[]
      */
-    private $events;
+    public $events;
 
     /**
      * Secret key that will be used to send webhooks to the endpoint
      *
      * @var string
      */
-    private $secretKey;
+    public $secretKey;
 
     /**
      * @param string $id
      * @param string $endpoint
      * @param string $description
-     * @param array $events
+     * @param Event[] $events
      * @param string $secretKey
      */
     public function __construct(string $id, string $endpoint, string $description, array $events, string $secretKey)
@@ -55,46 +62,5 @@ class Webhook
         $this->events = $events;
         $this->secretKey = $secretKey;
     }
-
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEndpoint(): string
-    {
-        return $this->endpoint;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @return array
-     */
-    public function getEvents(): array
-    {
-        return $this->events;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSecretKey(): string
-    {
-        return $this->secretKey;
-    }
-
 
 }
