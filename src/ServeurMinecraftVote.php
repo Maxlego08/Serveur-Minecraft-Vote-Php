@@ -138,7 +138,7 @@ class ServeurMinecraftVote
         $response = $client->post(self::API_BASE_URL . '/webhook/create', [
             'headers' => [
                 'Accept' => 'application/json',
-                'X-SMV-Signature' => $signature,
+                'X-SMV-Signature' => $timestamp . '.' . $signature,
             ],
             'form_params' => [
                 'userData' => $base64UserId,
