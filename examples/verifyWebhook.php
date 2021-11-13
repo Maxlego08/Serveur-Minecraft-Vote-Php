@@ -8,7 +8,7 @@ $secret = "wh_......";
 $data = @file_get_contents('php://input');
 $header = $_SERVER['HTTP_X-SMV-Signature'];
 
-$smv = new ServeurMinecraftVote();
+$smv = new ServeurMinecraftVote('smv_sk_....');
 
 try {
     $smv->verifyHeader($data, $header, $secret);
