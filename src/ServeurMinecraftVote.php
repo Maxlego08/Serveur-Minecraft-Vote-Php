@@ -175,7 +175,7 @@ class ServeurMinecraftVote
         $signature = hash_hmac('sha256', $signedPayload, $this->secretKey);
 
         $client = new Client();
-        $response = $client->post(self::API_BASE_URL . '/webhook/create', [
+        $response = $client->post(self::API_BASE_URL . '/webhook/list', [
             'headers' => [
                 'Accept' => 'application/json',
                 'X-SMV-Signature' => $timestamp . '.' . $signature,
@@ -188,7 +188,7 @@ class ServeurMinecraftVote
         if ($json['status'] !== 'error') {
             $webhooks = [];
             foreach ($json['webhooks'] as $webhook) {
-                array_push($webhooks, new Webhook($webhook['id'], $webhook['url'], $webhook['description'], [], $webhook['secret_key']));
+                array_push($webhooks, new Webhook($webhook['id'], $webhook['url'], $webhook['description'], Event::fromJson($webhook['events']), $webhook['secret_key']));
             }
             return $webhooks;
         }
