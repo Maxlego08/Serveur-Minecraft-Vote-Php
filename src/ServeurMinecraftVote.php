@@ -157,4 +157,43 @@ class ServeurMinecraftVote
         throw new WebhookCreateException($json['message']);
     }
 
+    /**
+     * Get webhooks list
+     *
+     * @return Webhook[]
+     * @throws GuzzleException
+     * @throws WebhookCreateException
+     */
+    public function getWebhooks(): array
+    {
+        $strExplode = explode('.', $this->secretKey);
+
+        $base64UserId = $strExplode[1];
+        $timestamp = time();
+
+        $signedPayload = "{$timestamp}.{$base64UserId}";
+        $signature = hash_hmac('sha256', $signedPayload, $this->secretKey);
+
+        $client = new Client();
+        $response = $client->post(self::API_BASE_URL . '/webhook/create', [
+            'headers' => [
+                'Accept' => 'application/json',
+                'X-SMV-Signature' => $timestamp . '.' . $signature,
+            ],
+            'form_params' => [
+                'userData' => $base64UserId,
+            ],
+        ]);
+        $json = json_decode((string)$response->getBody(), true);
+        if ($json['status'] !== 'error') {
+            $webhooks = [];
+            foreach ($json['webhooks'] as $webhook) {
+                array_push($webhooks, new Webhook($webhook['id'], $webhook['url'], $webhook['description'], [], $webhook['secret_key']));
+            }
+            return $webhooks;
+        }
+
+        throw new WebhookCreateException($json['message']);
+    }
+
 }
